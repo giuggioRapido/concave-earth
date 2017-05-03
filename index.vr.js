@@ -29,6 +29,48 @@ export default class InverseGlobe extends React.Component {
     i: 0
   }
 
+  constructor() {
+    super();
+    this.state = {
+      pano: 'linelessmap.jpg',
+      images: [
+        'linelessmap.jpg',
+        'map.jpg',
+        'tissot.png',
+        'nightlights.jpg',
+        '4096_earth.jpg'
+      ],
+      i: 0,
+      rotation: 130,
+      zoom: -70,
+    }
+
+    this.lastUpdate = Date.now();
+    this.rotate = this.rotate.bind(this);
+  }
+
+  componentDidMount() {
+    this.rotate();
+  }
+
+  componentWillUnmount() {
+    if (this.frameHandle) {
+      cancelAnimationFrame(this.frameHandle);
+      this.frameHandle = null;
+    }
+  }
+
+  rotate() {
+    const now = Date.now();
+    const delta = now - this.lastUpdate;
+    this.lastUpdate = now;
+
+    this.setState({
+      rotation: this.state.rotation + delta / 150
+    });
+    this.frameHandle = requestAnimationFrame(this.rotate);
+  }
+
   cyclePano(event) {
     if (event.nativeEvent.inputEvent.eventType == "click" || event.nativeEvent.inputEvent.eventType == "touchstart") {
       if (this.state.i == this.state.images.length - 1) {
@@ -43,21 +85,21 @@ export default class InverseGlobe extends React.Component {
   render() {
     return (
       <View onInput={ event => this.cyclePano(event)}>
-        <Pano source={asset(this.state.pano)}/>
-        <AmbientLight intensity={ 2.6 }  />
-        <Model
-		      style={{
-            transform: [
-              {translate: [-25, 0, -70]},
-              {scale: 0.05 },
-              {rotateY: -130},
-              {rotateX: 20},
-              {rotateZ: -10}
-            ],
-          }}
-          source={{obj:asset('earth.obj'), mtl:asset('earth.mtl')}}
-		      lit={true}
-        />
+      <Pano source={asset(this.state.pano)}/>
+      <AmbientLight intensity={ 2.6 }  />
+      <Model
+      style={{
+        transform: [
+          {translate: [-25, 0, -70]},
+          {scale: 0.05 },
+          {rotateY: this.state.rotation},
+          {rotateX: 20},
+          {rotateZ: -10}
+        ],
+      }}
+      source={{obj:asset('earth.obj'), mtl:asset('earth.mtl')}}
+      lit={true}
+      />
       </View>
     );
   }
