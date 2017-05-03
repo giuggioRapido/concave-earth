@@ -23,7 +23,8 @@ export default class InverseGlobe extends React.Component {
       'neon.png',
       'google.jpg',
       'linelessmapflipped.jpg',
-      'nightlightsflipped.jpg'
+      'nightlightsflipped.jpg',
+      '4096_earth.jpg'
     ],
     i: 0
   }
@@ -43,7 +44,20 @@ export default class InverseGlobe extends React.Component {
     return (
       <View onInput={ event => this.cyclePano(event)}>
         <Pano source={asset(this.state.pano)}/>
-
+        <AmbientLight intensity={ 2.6 }  />
+        <Model
+		      style={{
+            transform: [
+              {translate: [-25, 0, -70]},
+              {scale: 0.05 },
+              {rotateY: -130},
+              {rotateX: 20},
+              {rotateZ: -10}
+            ],
+          }}
+          source={{obj:asset('earth.obj'), mtl:asset('earth.mtl')}}
+		      lit={true}
+        />
       </View>
     );
   }
