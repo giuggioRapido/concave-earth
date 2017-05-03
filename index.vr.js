@@ -22,18 +22,20 @@ export default class InverseGlobe extends React.Component {
     i: 0
   }
 
-  cyclePano() {
-    if (this.state.i == this.state.images.length - 1) {
-      this.setState({i: 0})
-    } else {
-      this.setState({i: this.state.i + 1})
+  cyclePano(event) {
+    if (event.nativeEvent.inputEvent.eventType == "click" || event.nativeEvent.inputEvent.eventType == "touchstart") {
+      if (this.state.i == this.state.images.length - 1) {
+        this.setState({i: 0})
+      } else {
+        this.setState({i: this.state.i + 1})
+      }
+      this.setState({pano: this.state.images[this.state.i]})
     }
-    this.setState({pano: this.state.images[this.state.i]})
   }
 
   render() {
     return (
-      <View onInput={() => this.cyclePano()}>
+      <View onInput={ event => this.cyclePano(event)}>
         <Pano source={asset(this.state.pano)}/>
 
       </View>
