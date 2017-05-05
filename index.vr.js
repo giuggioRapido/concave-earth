@@ -22,7 +22,8 @@ export default class InverseGlobe extends React.Component {
       'colormap.jpg',
       'neon.png',
       'google.jpg',
-      'linelessmapflipped.jpg'
+      'linelessmapflipped.jpg',
+      'nightlightsflipped.jpg'
     ],
     i: 0
   }
