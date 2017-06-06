@@ -8,6 +8,7 @@ import {
   View,
   Model,
   AmbientLight,
+  VrButton
 } from 'react-vr';
 
 export default class InverseGlobe extends React.Component {
@@ -28,22 +29,30 @@ export default class InverseGlobe extends React.Component {
     i: 0
   }
 
-  cyclePano(event) {
-    if (event.nativeEvent.inputEvent.eventType == "click" || event.nativeEvent.inputEvent.eventType == "touchstart") {
+  cyclePano=()=> {
       if (this.state.i == this.state.images.length - 1) {
         this.setState({i: 0})
       } else {
         this.setState({i: this.state.i + 1})
       }
       this.setState({pano: this.state.images[this.state.i]})
-    }
   }
+
 
   render() {
     return (
-      <View onInput={ event => this.cyclePano(event)}>
+      <View>
         <Pano source={asset(this.state.pano)}/>
+        <VrButton
+          style={{
+            width: 0.1,
+            height: 0.1,
+            opacity: 1.0,
+            backgroundColor: 'red'
+          }}
+          onClick={this.cyclePano}>
 
+        </VrButton>
       </View>
     );
   }
