@@ -35,10 +35,8 @@ export default class InverseGlobe extends React.Component {
       pano: 'linelessmap.jpg',
       images: [
         'linelessmap.jpg',
-        'map.jpg',
         'tissot.png',
         'nightlights.jpg',
-        '4096_earth.jpg'
       ],
       i: 0,
       rotation: 130,
@@ -49,8 +47,9 @@ export default class InverseGlobe extends React.Component {
     this.rotate = this.rotate.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.rotate();
+    setInterval(this.cyclePano, 7000);
   }
 
   componentWillUnmount() {
@@ -71,20 +70,18 @@ export default class InverseGlobe extends React.Component {
     this.frameHandle = requestAnimationFrame(this.rotate);
   }
 
-  cyclePano(event) {
-    if (event.nativeEvent.inputEvent.eventType == "click" || event.nativeEvent.inputEvent.eventType == "touchstart") {
+  cyclePano = () => {
       if (this.state.i == this.state.images.length - 1) {
         this.setState({i: 0})
       } else {
         this.setState({i: this.state.i + 1})
       }
       this.setState({pano: this.state.images[this.state.i]})
-    }
   }
 
   render() {
     return (
-      <View onInput={ event => this.cyclePano(event)}>
+      <View>
       <Pano source={asset(this.state.pano)}/>
       <AmbientLight intensity={ 2.6 }  />
       <Model
